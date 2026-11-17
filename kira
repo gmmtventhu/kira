@@ -1,0 +1,845 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>悪魔の瞳 | The Forbidden Realm</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #08070d;
+  --purple: #a78bfa;
+  --pink: #d9a0c7;
+  --silver: #d8d2e5;
+  --muted: #8d849b;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: #eee8f5;
+  font-family: 'Cormorant Garamond', serif;
+  overflow-x: hidden;
+}
+
+/* BACKGROUND */
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 40%,
+    rgba(87,48,113,.19), transparent 65%),
+    radial-gradient(ellipse at 10% 90%,
+    rgba(130,65,110,.10), transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+#petals {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* NAVIGATION */
+
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px 8%;
+  background: rgba(8,7,13,.8);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(190,150,220,.12);
+}
+
+.logo {
+  font-family: 'Cinzel', serif;
+  font-size: 21px;
+  letter-spacing: 5px;
+  color: var(--silver);
+}
+
+.nav-links {
+  display: flex;
+  gap: 35px;
+}
+
+.nav-links a {
+  color: #c5bacf;
+  text-decoration: none;
+  font-size: 16px;
+  letter-spacing: 2px;
+  transition: .3s;
+}
+
+.nav-links a:hover {
+  color: var(--pink);
+  text-shadow: 0 0 12px var(--pink);
+}
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 26px;
+  cursor: pointer;
+}
+
+/* HERO */
+
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 130px 20px 80px;
+  position: relative;
+}
+
+.subtitle {
+  color: var(--pink);
+  letter-spacing: 7px;
+  font-size: 13px;
+  text-transform: uppercase;
+  margin-bottom: 25px;
+}
+
+.hero h1 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(40px, 8vw, 90px);
+  letter-spacing: 12px;
+  font-weight: 400;
+  text-shadow: 0 0 35px rgba(185,135,220,.35);
+}
+
+.hero p {
+  color: #aaa0b6;
+  font-size: 22px;
+  margin-top: 20px;
+  font-style: italic;
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+.enter {
+  margin-top: 35px;
+  padding: 13px 38px;
+  background: transparent;
+  color: var(--silver);
+  border: 1px solid rgba(202,165,230,.5);
+  letter-spacing: 4px;
+  cursor: pointer;
+  font-family: 'Cinzel', serif;
+  transition: .4s;
+}
+
+.enter:hover {
+  background: rgba(158,110,190,.15);
+  box-shadow: 0 0 30px rgba(181,125,219,.3);
+}
+
+/* ETHEREAL EYE */
+
+.eye-container {
+  margin: 50px auto 10px;
+  width: min(390px, 85vw);
+  height: 190px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.eye {
+  position: relative;
+  width: 260px;
+  height: 110px;
+  border-radius: 100% 10%;
+  transform: rotate(45deg);
+  background: linear-gradient(145deg,
+    #21152c, #09080f 60%, #3b214a);
+  border: 2px solid #b99acb;
+  box-shadow:
+    0 0 15px #b18acb,
+    0 0 40px rgba(175,120,220,.35),
+    inset 0 0 25px #6c477c;
+  overflow: hidden;
+  transition: .9s ease;
+}
+
+.eye-inner {
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%) rotate(-45deg);
+  background: radial-gradient(circle,
+    #08050d 0 13%,
+    #b5a1dd 17%,
+    #71488e 36%,
+    #24152f 68%,
+    #08070d 75%);
+  box-shadow: 0 0 25px #ba8de7;
+  opacity: 0;
+  transition: 1s;
+}
+
+.eye-inner::after {
+  content: "";
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  background: white;
+  opacity: .75;
+  border-radius: 50%;
+  top: 18px;
+  left: 20px;
+  filter: blur(5px);
+}
+
+.eye.open {
+  transform: rotate(0deg);
+  height: 110px;
+  border-radius: 100%;
+}
+
+.eye.open .eye-inner {
+  opacity: 1;
+}
+
+.eye.open::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    transparent 48%, #d4a9ed 50%, transparent 53%);
+  opacity: .25;
+}
+
+.eye-hint {
+  position: absolute;
+  bottom: -10px;
+  font-size: 14px;
+  letter-spacing: 4px;
+  color: var(--pink);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  50% { opacity: .35; }
+}
+
+/* SECTIONS */
+
+section:not(.hero) {
+  padding: 110px 10%;
+  text-align: center;
+}
+
+.section-label {
+  font-size: 12px;
+  letter-spacing: 6px;
+  color: var(--pink);
+  margin-bottom: 18px;
+}
+
+section h2 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(30px, 5vw, 48px);
+  font-weight: 400;
+  letter-spacing: 5px;
+  margin-bottom: 30px;
+}
+
+.description {
+  max-width: 750px;
+  margin: auto;
+  color: #b4aabb;
+  font-size: 21px;
+  line-height: 1.9;
+}
+
+.divider {
+  width: 100px;
+  height: 1px;
+  margin: 40px auto;
+  background: linear-gradient(90deg, transparent, #c49bcf, transparent);
+}
+
+/* ABOUT */
+
+.about-card {
+  max-width: 800px;
+  margin: 40px auto 0;
+  padding: 50px 35px;
+  border: 1px solid rgba(190,150,220,.2);
+  background: rgba(255,255,255,.015);
+  box-shadow: 0 0 50px rgba(100,50,130,.08);
+  transition: .4s;
+}
+
+.about-card:hover {
+  border-color: rgba(190,150,220,.5);
+  transform: translateY(-5px);
+}
+
+/* CONTACT */
+
+.contact-info {
+  margin: 20px auto;
+  font-size: 20px;
+  color: #c5b5d1;
+}
+
+.contact-info a {
+  color: var(--pink);
+  text-decoration: none;
+}
+
+.contact-info a:hover {
+  text-shadow: 0 0 15px var(--pink);
+}
+
+/* BOT */
+
+.bot-button {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #24182f;
+  border: 1px solid #b58acb;
+  color: #f0dafa;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 50;
+  box-shadow: 0 0 25px rgba(190,130,220,.3);
+  transition: .3s;
+}
+
+.bot-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 35px #a879c9;
+}
+
+.chatbox {
+  position: fixed;
+  right: 25px;
+  bottom: 100px;
+  width: min(350px, calc(100vw - 30px));
+  height: 430px;
+  background: rgba(13,10,19,.97);
+  border: 1px solid rgba(190,140,220,.5);
+  box-shadow: 0 0 40px rgba(160,100,200,.2);
+  z-index: 49;
+  display: none;
+  flex-direction: column;
+  backdrop-filter: blur(15px);
+}
+
+.chatbox.active {
+  display: flex;
+}
+
+.chat-header {
+  padding: 18px;
+  font-family: 'Cinzel', serif;
+  color: var(--pink);
+  border-bottom: 1px solid #46334f;
+  letter-spacing: 2px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.chat-header button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.messages {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.message {
+  padding: 12px;
+  max-width: 90%;
+  border-radius: 10px;
+  font-size: 17px;
+  line-height: 1.4;
+}
+
+.bot-message {
+  background: #21162a;
+  color: #e2d1ee;
+  align-self: flex-start;
+}
+
+.user-message {
+  background: #493151;
+  color: white;
+  align-self: flex-end;
+}
+
+.chat-input {
+  display: flex;
+  padding: 12px;
+  border-top: 1px solid #46334f;
+}
+
+.chat-input input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px;
+  background: #17111e;
+  border: 1px solid #493451;
+  color: white;
+  outline: none;
+  font-family: inherit;
+}
+
+.chat-input button {
+  padding: 10px 15px;
+  background: #53375e;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+/* FOOTER */
+
+footer {
+  text-align: center;
+  padding: 35px;
+  color: #72677d;
+  font-size: 16px;
+  letter-spacing: 2px;
+  border-top: 1px solid rgba(190,150,220,.12);
+}
+
+/* MOBILE */
+
+@media(max-width: 650px) {
+  nav {
+    padding: 20px 6%;
+  }
+
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 70px;
+    right: 0;
+    width: 100%;
+    background: #100c16;
+    flex-direction: column;
+    text-align: center;
+    padding: 30px;
+  }
+
+  .nav-links.show {
+    display: flex;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .hero h1 {
+    letter-spacing: 5px;
+  }
+
+  .hero p {
+    font-size: 19px;
+  }
+
+  section:not(.hero) {
+    padding: 85px 7%;
+  }
+
+  .eye {
+    width: 210px;
+    height: 90px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="petals"></canvas>
+
+<nav>
+  <div class="logo">悪魔の瞳</div>
+
+  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+
+  <div class="nav-links" id="navLinks">
+    <a href="#home" onclick="closeMenu()">Home</a>
+    <a href="#about" onclick="closeMenu()">About Us</a>
+    <a href="#contact" onclick="closeMenu()">Contact Us</a>
+  </div>
+</nav>
+
+<!-- HOME -->
+
+<header class="hero" id="home">
+
+  <div class="subtitle">Welcome, Uninvited Soul</div>
+
+  <h1>悪魔の瞳</h1>
+
+  <p>
+    "Some doors are never meant to be opened.
+    Yet, here you are."
+  </p>
+
+  <div class="eye-container" onclick="openEye()">
+    <div class="eye" id="eye">
+      <div class="eye-inner"></div>
+    </div>
+    <div class="eye-hint" id="eyeHint">
+      TOUCH THE EYE
+    </div>
+  </div>
+
+  <button class="enter" onclick="document.getElementById('about').scrollIntoView()">
+    ENTER THE UNKNOWN
+  </button>
+
+</header>
+
+<!-- ABOUT -->
+
+<section id="about">
+
+  <div class="section-label">THE ONES BEHIND THE VEIL</div>
+
+  <h2>About Devicate</h2>
+
+  <div class="divider"></div>
+
+  <div class="about-card">
+
+    <p class="description">
+      We are <strong style="color:#d9a0c7;">Devicate</strong>,
+      a group driven by imagination, creativity, and the
+      fascination of things beyond the ordinary.
+      <br><br>
+      We believe that beauty can exist in the mysterious,
+      that darkness can hold elegance, and that imagination
+      has no boundaries.
+      <br><br>
+      Through this realm, we invite you to experience
+      something unusual — something beautiful,
+      something haunting, something unforgettable.
+      <br><br>
+      But remember...
+      not everything that welcomes you has good intentions.
+    </p>
+
+  </div>
+
+</section>
+
+<!-- CONTACT -->
+
+<section id="contact">
+
+  <div class="section-label">REACH BEYOND THE VEIL</div>
+
+  <h2>Contact Us</h2>
+
+  <div class="divider"></div>
+
+  <p class="description">
+    Have questions? Perhaps you wish to communicate
+    with those who created this realm.
+    The doors remain open.
+  </p>
+
+  <div class="contact-info">
+    Phone Number:
+    <a href="tel:09707184425">09707184425</a>
+  </div>
+
+  <div class="contact-info">
+    Email:
+    <a href="mailto:blenthusiasm101@gmail.com">
+      blenthusiasm101@gmail.com
+    </a>
+  </div>
+
+</section>
+
+<footer>
+  悪魔の瞳 · DEVICATE
+  <br><br>
+  <span style="font-size:13px;">
+    "You were never supposed to find this place."
+  </span>
+</footer>
+
+<!-- MYSTERIOUS BOT -->
+
+<button class="bot-button" onclick="toggleChat()" title="Speak to the entity">
+  ☽
+</button>
+
+<div class="chatbox" id="chatbox">
+
+  <div class="chat-header">
+    THE WATCHER
+    <button onclick="toggleChat()">×</button>
+  </div>
+
+  <div class="messages" id="messages">
+    <div class="message bot-message">
+      ...Oh?
+      <br><br>
+      Another visitor.
+      <br><br>
+      Interesting. You have crossed a boundary
+      that was never meant to be crossed.
+      <br><br>
+      Tell me, little wanderer...
+      Do you know where you are?
+    </div>
+  </div>
+
+  <div class="chat-input">
+    <input
+      type="text"
+      id="userInput"
+      placeholder="Speak, if you dare..."
+      onkeydown="if(event.key==='Enter')sendMessage()"
+    >
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+</div>
+
+<script>
+
+/* NAVIGATION */
+
+function toggleMenu() {
+  document.getElementById("navLinks").classList.toggle("show");
+}
+
+function closeMenu() {
+  document.getElementById("navLinks").classList.remove("show");
+}
+
+/* EYE */
+
+let eyeOpened = false;
+
+function openEye() {
+  eyeOpened = !eyeOpened;
+
+  const eye = document.getElementById("eye");
+  const hint = document.getElementById("eyeHint");
+
+  eye.classList.toggle("open", eyeOpened);
+
+  hint.innerText = eyeOpened
+    ? "IT SEES YOU NOW"
+    : "TOUCH THE EYE";
+}
+
+/* CHERRY BLOSSOM PARTICLES */
+
+const canvas = document.getElementById("petals");
+const ctx = canvas.getContext("2d");
+
+let width, height;
+let petals = [];
+
+function resize() {
+  width = canvas.width = window.innerWidth;
+  height = canvas.height = window.innerHeight;
+}
+
+window.addEventListener("resize", resize);
+resize();
+
+function createPetal() {
+  return {
+    x: Math.random() * width,
+    y: Math.random() * height,
+    size: Math.random() * 5 + 3,
+    speed: Math.random() * 1 + .4,
+    sway: Math.random() * 2,
+    angle: Math.random() * 360,
+    rotation: Math.random() * .04 - .02
+  };
+}
+
+for(let i = 0; i < 45; i++) {
+  petals.push(createPetal());
+}
+
+function animatePetals() {
+
+  ctx.clearRect(0, 0, width, height);
+
+  petals.forEach(p => {
+
+    p.y += p.speed;
+    p.x += Math.sin(p.angle) * p.sway;
+    p.angle += .015;
+    p.rotation += .01;
+
+    if(p.y > height + 20) {
+      p.y = -20;
+      p.x = Math.random() * width;
+    }
+
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.rotation);
+
+    ctx.fillStyle = "rgba(225,166,207,.55)";
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = "#d99acb";
+
+    ctx.beginPath();
+    ctx.ellipse(0, 0, p.size, p.size * .55,
+      Math.PI / 4, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.restore();
+  });
+
+  requestAnimationFrame(animatePetals);
+}
+
+animatePetals();
+
+/* MYSTERIOUS CHATBOT */
+
+function toggleChat() {
+  document.getElementById("chatbox").classList.toggle("active");
+}
+
+function addMessage(text, sender) {
+  const messages = document.getElementById("messages");
+
+  const div = document.createElement("div");
+  div.className = "message " + sender;
+  div.textContent = text;
+
+  messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
+}
+
+function sendMessage() {
+
+  const input = document.getElementById("userInput");
+  const text = input.value.trim();
+
+  if(!text) return;
+
+  addMessage(text, "user-message");
+  input.value = "";
+
+  setTimeout(() => {
+
+    const lower = text.toLowerCase();
+
+    let reply;
+
+    if(lower.includes("who are you")) {
+      reply = "I am the Watcher. I have guarded this place longer than your world has known time.";
+    }
+
+    else if(lower.includes("where am i")) {
+      reply = "Somewhere between what exists and what should never have existed. Welcome to the other side.";
+    }
+
+    else if(lower.includes("devicate")) {
+      reply = "Ah... Devicate. The creators. They opened the gates, but even they do not know everything that resides here.";
+    }
+
+    else if(lower.includes("hello") || lower.includes("hi")) {
+      reply = "How curious. You greet me as though I were an ordinary being. How charming.";
+    }
+
+    else if(lower.includes("scared") || lower.includes("afraid")) {
+      reply = "Fear is a natural response to the unknown. Do not worry, little wanderer. For now, you are merely a guest.";
+    }
+
+    else if(lower.includes("eye")) {
+      reply = "The eye? It has been waiting for someone to notice it. Perhaps it has noticed you, too.";
+    }
+
+    else if(lower.includes("leave") || lower.includes("exit")) {
+      reply = "Leaving already? The gates are where you found them. Whether you remember the way back is another matter.";
+    }
+
+    else if(lower.includes("thank")) {
+      reply = "Gratitude... how unusual in a place like this. You are welcome, wanderer.";
+    }
+
+    else if(lower.includes("love")) {
+      reply = "Even in a realm of shadows, affection finds a way to exist. What a fascinating contradiction.";
+    }
+
+    else {
+      const responses = [
+        "Interesting... The walls seem to whisper whenever you speak.",
+        "I wonder if you truly understand the place you have entered.",
+        "There are questions even I am forbidden to answer.",
+        "Careful, wanderer. Some curiosities are better left untouched.",
+        "You speak as though this were a dream. I assure you, it is not.",
+        "The eye is watching. It always has been.",
+        "Perhaps you should ask a different question. One that you are prepared to hear answered.",
+        "Silence... Did you hear that? Never mind. It is probably nothing."
+      ];
+
+      reply = responses[Math.floor(Math.random() * responses.length)];
+    }
+
+    addMessage(reply, "bot-message");
+
+  }, 900);
+}
+
+</script>
+
+</body>
+</html>
